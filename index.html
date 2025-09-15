@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lidia & Pedro — Amor Infinito</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #ff4f81;
+      --secondary: #b5179e;
+      --accent: #ffd6e0;
+      --dark: #1a001f;
+      --light: #fff;
+      --font-script: "Great Vibes", cursive;
+      --font-sans: "Montserrat", sans-serif;
+    }
+
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+
+    body {
+      font-family: var(--font-sans);
+      background: radial-gradient(circle at top, #33001b, #1a001f, #000);
+      color: var(--light);
+      overflow-x: hidden;
+    }
+
+    canvas#hearts-bg {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      z-index:0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* ====== Header ====== */
+    .titulo { text-align: center; margin-bottom: 20px; }
+    .titulo h1 {
+      font-family: var(--font-script);
+      font-size: 3rem;
+      color: var(--primary);
+      text-shadow: 0 0 15px rgba(255,0,100,0.6), 0 0 25px var(--primary);
+      animation: glow 3s infinite alternate;
+    }
+    .titulo p { margin-top: 10px; font-size: 1.1rem; color: var(--accent); }
+    @keyframes glow {
+      from {text-shadow: 0 0 10px var(--secondary);}
+      to {text-shadow: 0 0 25px var(--primary), 0 0 35px var(--accent);}
+    }
+
+    /* ====== Carrossel ====== */
+    .carousel {
+      position: relative;
+      max-width: 600px;
+      margin: 40px auto;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(255,0,100,0.4);
+    }
+
+    .carousel img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: none;
+      border-radius: 20px;
+    }
+
+    .carousel img.active {
+      display: block;
+      animation: fade 1s;
+    }
+
+    @keyframes fade {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 12px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.5);
+      color: var(--light);
+      font-size: 1.5rem;
+      user-select: none;
+      transition: background 0.3s;
+    }
+
+    .prev:hover, .next:hover { background: rgba(255,79,129,0.8); }
+
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    /* ====== Depoimento ====== */
+    .depoimento {
+      max-width:800px; margin:60px auto; padding:30px;
+      background:rgba(255,255,255,0.05); backdrop-filter:blur(15px);
+      border-radius:20px; text-align:center; box-shadow:0 8px 30px rgba(255,0,100,0.3);
+    }
+    .depoimento p { font-size:1.1rem; line-height:1.8; }
+    .typewriter { display:inline-block; border-right:2px solid var(--accent);
+      animation: blink 0.8s infinite; white-space: pre-wrap; }
+    @keyframes blink {0%,100%{border-color:transparent;}50%{border-color:var(--accent);}}
+
+    /* ====== Contador Circular ====== */
+    .tempo-juntos { margin:80px auto; text-align:center; }
+    .tempo-juntos h2 { font-family:var(--font-script); font-size:2.5rem; margin-bottom:30px; text-shadow:0 0 20px var(--primary);}
+    .counters { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; }
+    .circle {
+      width:120px; height:120px; border-radius:50%; border:5px solid rgba(255,255,255,0.2);
+      display:flex; flex-direction:column; justify-content:center; align-items:center;
+      position:relative; overflow:hidden; box-shadow:0 0 20px rgba(255,0,100,0.4);
+    }
+    .circle::before {
+      content:""; position:absolute; inset:-2px; border-radius:50%;
+      background:conic-gradient(var(--primary), var(--secondary), var(--primary));
+      animation:spin 6s linear infinite; z-index:0;
+    }
+    .circle span, .circle small { position:relative; z-index:1; }
+    .circle span {font-size:1.6rem; font-weight:700;}
+    .circle small {font-size:0.8rem; text-transform:uppercase;}
+    @keyframes spin {to{transform:rotate(360deg);}}
+
+    /* ====== Timeline ====== */
+    .timeline { margin:80px auto; max-width:800px; position:relative; }
+    .timeline::before {
+      content:""; position:absolute; left:50%; transform:translateX(-50%);
+      width:4px; height:100%; background:linear-gradient(var(--primary), var(--secondary));
+    }
+    .event {
+      position:relative; width:50%; padding:16px;
+      background:rgba(255,255,255,0.05); backdrop-filter:blur(10px);
+      border-radius:12px; margin:20px 0; box-shadow:0 4px 20px rgba(0,0,0,0.3);
+    }
+    .event.left { left:0; transform:translateX(-10%); }
+    .event.right { left:50%; transform:translateX(10%); }
+    .event h3 { color:var(--primary); font-size:1.2rem; margin-bottom:8px;}
+    .event p { font-size:0.95rem; color:var(--light); }
+
+    /* ====== Frase Secreta ====== */
+    .surpresa { text-align:center; margin:80px auto; }
+    .surpresa button {
+      background:var(--primary); border:none; padding:12px 24px; border-radius:30px;
+      font-size:1rem; color:var(--light); cursor:pointer; box-shadow:0 0 15px var(--primary);
+      transition:transform 0.3s;
+    }
+    .surpresa button:hover { transform:scale(1.05); }
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9);
+      z-index:15; justify-content:center; align-items:center; text-align:center; }
+    .modal.active { display:flex; }
+    .modal-content {
+      background:rgba(255,255,255,0.1); padding:30px; border-radius:20px;
+      box-shadow:0 0 30px var(--primary);
+    }
+    .modal-content h2 { font-family:var(--font-script); font-size:2rem; color:var(--accent);}
+    .modal .close { margin-top:20px; cursor:pointer; font-size:1rem; color:var(--light); }
+
+    /* ====== Sendo Feliz ====== */
+    .seja-feliz { text-align:center; margin:80px auto 40px; }
+    .seja-feliz h2 { font-family:var(--font-script); font-size:2rem; margin-bottom:20px;}
+    .seja-feliz .dias-totais { font-size:2.5rem; font-weight:bold; text-shadow:0 0 15px var(--primary);}
+
+    /* ====== Frases Parallax ====== */
+    .frase-parallax { text-align:center; font-size:1.2rem; margin:80px 20px; color:var(--accent); opacity:0; transform:translateY(40px); transition:all 1s;}
+    .frase-parallax.visible { opacity:1; transform:translateY(0); }
+
+    /* ====== Rodapé ====== */
+    footer { text-align:center; padding:20px; color:var(--accent); background:rgba(0,0,0,0.6); font-style:italic; text-shadow:0 0 15px var(--primary); }
+
+    /* ====== Botão Música ====== */
+    #music-btn { position:fixed; bottom:20px; right:20px; background:var(--primary);
+      border:none; width:50px; height:50px; border-radius:50%; cursor:pointer;
+      box-shadow:0 0 15px var(--primary); display:flex; align-items:center; justify-content:center;
+      color:var(--light); font-size:1.2rem; z-index:20; animation:pulse 2s infinite; }
+    @keyframes pulse {0%{box-shadow:0 0 10px var(--primary);}50%{box-shadow:0 0 25px var(--primary);}100%{box-shadow:0 0 10px var(--primary);}}
+  </style>
+</head>
+<body>
+  <!-- Fundo Corações -->
+  <canvas id="hearts-bg"></canvas>
+
+  <div class="container">
+    <header class="titulo">
+      <h1>Lidia & Pedro</h1>
+      <p>Desde 19 de setembro de 2024</p>
+    </header>
+
+    <!-- Carrossel -->
+    <div class="carousel" id="carousel">
+      <span class="prev" id="prev">❮</span>
+      <span class="next" id="next">❯</span>
+      <img src="foto1.jpeg" class="active" alt="Foto 1">
+      <img src="foto2.jpeg" alt="Foto 2">
+      <img src="foto3.jpeg" alt="Foto 3">
+      <img src="foto4.jpeg" alt="Foto 4">
+      <img src="foto5.jpeg" alt="Foto 5">
+      <img src="foto6.jpeg" alt="Foto 6">
+      <img src="foto7.jpeg" alt="Foto 7">
+      <img src="foto8.jpeg" alt="Foto 8">
+      <img src="foto9.jpeg" alt="Foto 9">
+      <img src="foto10.jpeg" alt="Foto 10">
+      <img src="foto11.jpeg" alt="Foto 11">
+      <img src="foto12.jpeg" alt="Foto 12">
+      <img src="foto13.jpeg" alt="Foto 13">
+      <img src="foto14.jpeg" alt="Foto 14">
+      <img src="foto15.jpeg" alt="Foto 15">
+      <img src="foto16.jpeg" alt="Foto 16">
+      <img src="foto17.jpeg" alt="Foto 17">
+      <img src="foto18.jpeg" alt="Foto 18">
+      <img src="foto19.jpeg" alt="Foto 19">
+      <img src="foto20.jpeg" alt="Foto 20">
+      <img src="foto21.jpeg" alt="Foto 21">
+      <img src="foto22.jpeg" alt="Foto 22">
+      <img src="foto23.jpeg" alt="Foto 23">
+      <img src="foto24.jpeg" alt="Foto 24">
+      <img src="foto25.jpeg" alt="Foto 25">
+      <img src="foto26.jpeg" alt="Foto 26">
+    </div>
+
+    <!-- Depoimento -->
+    <div class="depoimento"><p id="mensagem" class="typewriter"></p></div>
+
+    <!-- Contador -->
+    <section class="tempo-juntos">
+      <h2>Nosso Tempo Juntos</h2>
+      <div class="counters">
+        <div class="circle"><span id="anos">0</span><small>Anos</small></div>
+        <div class="circle"><span id="meses">0</span><small>Meses</small></div>
+        <div class="circle"><span id="dias">0</span><small>Dias</small></div>
+        <div class="circle"><span id="horas">0</span><small>Horas</small></div>
+        <div class="circle"><span id="minutos">0</span><small>Minutos</small></div>
+        <div class="circle"><span id="segundos">0</span><small>Segundos</small></div>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline">
+      <div class="event left"><h3>🚗 Primeiro Encontro</h3><p>Exame Prático de Auto Escola</p></div>
+      <div class="event right"><h3>💞 Início do Namoro</h3><p>19 de setembro de 2024</p></div>
+      <div class="event left"><h3>💍 Possível Noivado</h3><p>2026</p></div>
+    </section>
+
+    <!-- Frase Secreta -->
+    <section class="surpresa">
+      <button id="surpresaBtn">Clique para Surpresa 💌</button>
+    </section>
+    <div class="modal" id="modalSurpresa">
+      <div class="modal-content">
+        <h2>“Quero passar todos os meus amanhãs com você.”</h2>
+        <div class="close" id="closeModal">Fechar ✕</div>
+      </div>
+    </div>
+
+    <!-- Frases Parallax -->
+    <div class="frase-parallax">"Você é o meu hoje e todos os meus amanhãs."</div>
+    <div class="frase-parallax">"Com você, cada dia é infinito."</div>
+    <div class="frase-parallax">"Nosso amor é a melhor parte da minha vida."</div>
+
+    <!-- Sendo Feliz -->
+    <section class="seja-feliz">
+      <h2>Sendo Feliz</h2>
+      <div class="dias-totais" id="diasTotais">0</div>
+      <div class="subtexto">dias ao seu lado</div>
+    </section>
+  </div>
+
+  <footer>✨ Com amor eterno, Pedro & Lidia ❤️</footer>
+
+  <!-- Música -->
+  <audio id="bg-music" loop><source src="musica.mp3" type="audio/mpeg"></audio>
+  <button id="music-btn">❤</button>
+
+  <script>
+    /* ===== Fundo corações ===== */
+    const canvas=document.getElementById("hearts-bg"),ctx=canvas.getContext("2d");
+    canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+    let hearts=[];function createHeart(){return{x:Math.random()*canvas.width,y:canvas.height+Math.random()*100,size:Math.random()*20+10,speed:Math.random()*1+0.5,alpha:Math.random()*0.5+0.5};}
+    for(let i=0;i<40;i++)hearts.push(createHeart());
+    function drawHearts(){ctx.clearRect(0,0,canvas.width,canvas.height);hearts.forEach(h=>{ctx.font=h.size+"px serif";ctx.fillStyle=`rgba(255,105,180,${h.alpha})`;ctx.fillText("❤",h.x,h.y);h.y-=h.speed;if(h.y<-20){h.x=Math.random()*canvas.width;h.y=canvas.height+20;}});requestAnimationFrame(drawHearts);}drawHearts();
+    window.addEventListener("resize",()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+
+    /* ===== Typewriter ===== */
+    const msg=`"Lidia, cada instante ao seu lado é poesia. Obrigado por transformar meus dias em capítulos inesquecíveis de um livro que quero escrever com você para sempre. Com todo o meu amor, Pedro."`;
+    const p=document.getElementById("mensagem");let i=0;function typeWriter(){if(i<msg.length){p.textContent+=msg.charAt(i);i++;setTimeout(typeWriter,50);}}typeWriter();
+
+    /* ===== Contador ===== */
+    const startDate=new Date(2024,8,19,0,0,0);
+    function atualizarContador(){const agora=new Date();let anos=agora.getFullYear()-startDate.getFullYear(),meses=agora.getMonth()-startDate.getMonth(),dias=agora.getDate()-startDate.getDate(),horas=agora.getHours()-startDate.getHours(),minutos=agora.getMinutes()-startDate.getMinutes(),segundos=agora.getSeconds()-startDate.getSeconds();if(segundos<0){segundos+=60;minutos--;}if(minutos<0){minutos+=60;horas--;}if(horas<0){horas+=24;dias--;}if(dias<0){const mesAnterior=new Date(agora.getFullYear(),agora.getMonth(),0);dias+=mesAnterior.getDate();meses--;}if(meses<0){meses+=12;anos--;}const diff=agora-startDate;const diasTotais=Math.floor(diff/(1000*60*60*24));document.getElementById("anos").textContent=anos;document.getElementById("meses").textContent=meses;document.getElementById("dias").textContent=dias;document.getElementById("horas").textContent=horas;document.getElementById("minutos").textContent=minutos;document.getElementById("segundos").textContent=segundos;document.getElementById("diasTotais").textContent=diasTotais.toLocaleString("pt-BR");}
+    atualizarContador();setInterval(atualizarContador,1000);
+
+    /* ===== Música ===== */
+    const music=document.getElementById("bg-music"),musicBtn=document.getElementById("music-btn");let playing=false;
+    musicBtn.addEventListener("click",()=>{if(!playing){music.play();playing=true;musicBtn.textContent="⏸";}else{music.pause();playing=false;musicBtn.textContent="❤";}});
+
+    /* ===== Frase secreta ===== */
+    const surpresaBtn=document.getElementById("surpresaBtn"),modal=document.getElementById("modalSurpresa"),closeModal=document.getElementById("closeModal");
+    surpresaBtn.addEventListener("click",()=>modal.classList.add("active"));closeModal.addEventListener("click",()=>modal.classList.remove("active"));
+
+    /* ===== Frases parallax ===== */
+    const frases=document.querySelectorAll(".frase-parallax");window.addEventListener("scroll",()=>{frases.forEach(f=>{const rect=f.getBoundingClientRect();if(rect.top<window.innerHeight-100){f.classList.add("visible");}});});
+
+    /* ===== Corações interativos ===== */
+    document.body.addEventListener("click",(e)=>{const heart=document.createElement("div");heart.textContent="❤";heart.style.position="absolute";heart.style.left=e.pageX+"px";heart.style.top=e.pageY+"px";heart.style.fontSize="20px";heart.style.color="var(--primary)";heart.style.animation="floatUp 2s ease forwards";document.body.appendChild(heart);setTimeout(()=>heart.remove(),2000);});
+    const style=document.createElement("style");style.textContent=`@keyframes floatUp{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(-80px);opacity:0;}}`;document.head.appendChild(style);
+
+    /* ===== Carrossel ===== */
+    const images=document.querySelectorAll("#carousel img");
+    let current=0;
+    function showImage(index){images.forEach((img,i)=>img.classList.toggle("active",i===index));}
+    document.getElementById("next").addEventListener("click",()=>{current=(current+1)%images.length;showImage(current);});
+    document.getElementById("prev").addEventListener("click",()=>{current=(current-1+images.length)%images.length;showImage(current);});
+  </script>
+</body>
+</html>
